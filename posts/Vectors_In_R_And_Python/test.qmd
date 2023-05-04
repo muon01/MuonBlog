@@ -1,0 +1,396 @@
+---
+title: "Vectors in R & Python: Just Use Matrices"
+format: 
+    html:
+        theme: default
+        self-contained: true
+        toc: true
+        toc-location: left
+        toc-expand: 3
+editor: visual
+author: Muon
+date: "2023-05-03"
+categories: [Linear Algebra]
+---
+
+## Using R & Python To Study Vectors
+
+During my study into linear algebra, most common resources I find online, or in books, use Python and the Numpy and SciPy packages for teaching and demonstrations. With some determination and experience, it is not difficult to implement equivalent code using R. However, there are some differences in the syntax and grammar between R and Python that can confuse some users.
+
+I will show you how to use vectors in both R and Python, show some points of potential confusions, and lastly present you how to use matrices in R and Python.
+
+Ultimately, I recommend working with implementations of matrices, for both R and Python, even when working with vectors. Matrices behave in ways that are consistent to how you would learn from mathematics, and both R and Python makes fewer assumptions so that you can avoid confusions.
+
+## R Vectors
+
+Constructing a vector in R is fairly trivial. You simply use the `c()` function and write a series of values within the parentheses.
+
+```{r}
+c(1,2,3,4)
+```
+
+Assigning a vector to a variable can be done with the code below:
+
+```{r}
+vector1 <- c(1,2,3,4)
+```
+
+### Vector Orientation
+
+It seems to be the norm in mathematics resources for vectors to be defined as column vectors unless stated otherwise. However, the way we write vectors in code is horizontal. This makes it more intuitive for novices like me to interpret coded vectors as row vectors.
+
+Printing the `vector1` variable displays the vector horizontally.
+
+```{r}
+vector1
+```
+
+One would think that to obtain the column vector of `vector1` would be as trivial as passing the vector through the transpose function; `t()`.
+
+```{r}
+t(vector1)
+```
+
+However, we get a row vector. And it looks a little different. There are now numbers indexing the column position of each element of the vector.
+
+If we transpose the vector again, we now get the column vector we were originally looking for. Again, this looks different from our original vector. It now shows row index numbers.
+
+```{r}
+t(t(vector1))
+```
+
+If seems like out original vector was in column form all along. For those who are familiar with R, this result is not surprising. Lets take a closer look.
+
+If we display our original vector:
+
+```{r}
+vector1
+```
+
+We can see that the series of numbers starts with what looks like a row index number. However, that number in square brackets is not a row index number. It is the element index number denoting the position of the element in the vector.
+
+We can display a longer vector to demonstrate this.
+
+```{r}
+# this is a shorthand method of displaying a vector or integers
+# between 1 and 200.
+1:200
+```
+
+Depending on the size of your window and font, the vector of a series of integers from 1 to 200 will display using multiple lines. Each line will starts with the element number representing the first element on that new line.
+
+I erroneously assumed that, because vectors displayed horizontally, vectors are encoded as row vectors. However, they should be understood to follow the mathematical convention of being column vectors by default.
+
+### Automatic Dot Product
+
+Now that we know vectors are columns by default, lets try vector multiplications. Dot product, or inner product, to be exact.
+
+$$
+\mathbf{x}^{\top}\mathbf{y} = \sum_{i=1}^{n}x_{i}y_{i}
+$$
+
+```{=tex}
+\begin{bmatrix}
+1 & 2 & 3 & 4\\
+\end{bmatrix}
+
+\times
+
+\begin{bmatrix}
+1\\
+2\\
+3\\
+4
+\end{bmatrix}
+```
+Following the equation, we know that the left "x" vector needs to be in row form and that the right "y" vector needs to be in the default column form. Lets try it.
+
+```{r}
+t(vector1) %*% vector1
+```
+
+We obtained the expected result.
+
+However, lets say we forgot to transpose our left "x" vector.
+
+```{r}
+vector1 %*% vector1
+```
+
+We can see that we obtained the dot product as we intended. It seems like R automatically assumes we wish to obtain the dot product when we perform vector multiplication with two vectors.
+
+R will not assume you want the outer product. If you want the outer product, you need to explicitly command it by transposing the right vector.
+
+```{=tex}
+\begin{bmatrix}
+1\\
+2\\
+3\\
+4
+\end{bmatrix}
+
+\times
+
+\begin{bmatrix}
+1 & 2 & 3 & 4\\
+\end{bmatrix}
+```
+```{r}
+vector1 %*% t(vector1)
+```
+
+### Summary
+
+-   R vectors are column vectors. They are not row vectors despite being displayed horizontally.
+
+-   When displaying a long vector, the index number on each row represents the position of the element that starts on the new line.
+
+-   Vector multiplication without transposing either vector will default to dot product.
+
+## Python Vectors
+
+I will now do the same process as I did above using Python code.
+
+In Python, folks usually use the array object from the Numpy package, instead of the, built-in, Python array or list objects.
+
+```{python}
+# import the Numpy package and give it the namespace "np"
+import numpy as np
+```
+
+```{python}
+np.array([1,2,3,4])
+```
+
+Assigning the array to a variable is simple.
+
+```{python}
+vector1 = np.array([1,2,3,4])
+```
+
+### Vector Orientation
+
+Lets take a look at how the vector looks like.
+
+```{python}
+vector1
+```
+
+Similar to R, Python's Numpy vectors are displayed horizontally.
+
+Lets try transposing it.
+
+```{python}
+vector1.T
+# The above is a shorthand for using the full Numpy transpose function
+# np.transpose(vector1)
+```
+
+We see that the vector is displayed horizontally. Does this mean that numpy vectors were originally column vectors?
+
+Lets try vector multiplication to find out.
+
+```{python}
+vector1 @ vector1
+vector1.T @ vector1
+# the @ operator is a shorthand for vector/matrix multiplication.
+# it is equivilant to:
+# np.matmul(vector1, vector1)
+```
+
+Just like R, we see that Python assumed that we wanted the dot product of the two vectors. Even without explicitly transposing the left vector, it does so automatically.
+
+We can confirm this by using the `np.shape()` function.
+
+```{python}
+np.shape(vector1)
+```
+
+The first number of the output represents the number of rows. while the second number (it is empty) shows the number of columns. It seems to be a column vector.
+
+Now, to obtain the outer product we must explicitly transpose the right vector, right?
+
+```{python}
+vector1 @ vector1.T
+```
+
+Unexpectedly, transposing the right vector did not result in the outer product. Should we transpose the right vector again?
+
+```{python}
+vector1 @ np.transpose(np.transpose(vector1))
+vector1 @ np.transpose(np.transpose(np.transpose(vector1)))
+vector2 = np.transpose(vector1)
+vector2
+np.shape(vector2)
+```
+
+It seems like no amount of transposing the right vector gives us the result we are looking for. Additionally, assigning the transpose to a new variable does not change how the vector looks like.
+
+To obtain the outer product, we must instead use the `outer()` Numpy function.
+
+```{python}
+np.outer(vector1, vector1)
+```
+
+### The correct way to make vectors
+
+This was a long winded demonstration of how confusing Python/Numpy can be with vectors.
+
+I'll now show how to make it more intuitive.
+
+There are two methods:
+
+-   For `np.array()`, use two square brackets inside the function.
+
+-   Or use the `np.mat()` function (No need to use two square brackets).
+
+Using `np.array()`, unlike previously, our new method will use two square brackets inside the function.
+
+```{python}
+vector2 = np.array([[1,2,3,4]]) # instead of np.array([1,2,3,4])
+vector1
+vector2
+np.shape(vector2)
+```
+
+We can see that the new `vector2` contains an extra pair of square brackets.
+
+Importantly, we can see that it is now a row vector by default (using the `np.shape()` function). Lets try vector multiplying them.
+
+```{python, error=TRUE}
+vector2 @ vector2
+```
+
+We see an error telling us that there is a mismatch of vector dimension. This is the behavior we should expect if Python did not automatically assume the operation we are trying to do. I prefer this behavior.
+
+To get the dot product we must explicitly transpose the correct vector or call the `np.dot()` function.
+
+If you were paying close attention, you would have remembered that the default orientation of our new vector is horizontal (row vector). Our left vector is already a row vector, so we need to transpose the right vector to get the dot product
+
+```{python}
+vector2 @ vector2.T
+```
+
+Be careful when using the `np.dot()` or `np.outer()` function. Because our functions are no longer the "default" type of vector (for the lack of a better word), the function will no longer behave like it did before.
+
+```{python, error=TRUE}
+np.dot(vector2, vector2)
+np.dot(vector2.T, vector2)
+np.dot(vector2, vector2.T)
+```
+
+As you can see, just like using the `@` operator, we needed to explicitly transpose the right vector to obtain the dot product we expected.
+
+Transposing the left matrix gave us the outer product.
+
+```{python}
+np.outer(vector2, vector2)
+np.outer(vector2.T, vector2)
+np.outer(vector2, vector2.T)
+```
+
+When we used the `np.outer()` function, regardless of transposing or not, we obtained the outer product of the two vectors.
+
+### Summary
+
+-   By default, Numpy arrays are row vectors.
+
+-   Transposing `np.array()` vectors will not give you a column vector.
+
+-   You must provide double square brackets inside the `np.array([[1...n]])` function for the vector to behave conventionally.
+
+## Just Use Matrices
+
+Experienced users might already know that I have already mixed vectors and matrices in the examples thus far. Because of these potential confusion, I recommend simply using matrices to begin with.
+
+Working with matrices is nice because they behave consistently.
+
+### R Examples
+
+Here is how you a vector as a matrix using the `matrix()` function.
+
+```{r}
+colvec1 <- matrix(data = 1:4, ncol = 1)
+colvec1
+```
+
+We explicitly stated that we want a matrix with one column. This is the typical form of a vector that is most expected in mathmatics.
+
+We can create a row matrix by specifying that we want a matrix with only one row.
+
+```{r}
+rowvec1 <- matrix(data = 1:4, nrow = 1)
+rowvec1
+```
+
+By being explicit, we remove any ambiguities about what orientation our vector is in.
+
+If we try to vector multiply them, they will behave as we expect with no assumptions from R. If we try to multiply two vectors in the same orientation, R will give us an error.
+
+```{r, error=TRUE}
+colvec1 %*% colvec1
+rowvec1 %*% rowvec1
+```
+
+If we transpose our vectors, they will be in the orientation we expect.
+
+```{r}
+t(colvec1)
+t(rowvec1)
+```
+
+To get the dot or outer product, we must provide vectors with the appropriate orientations.
+
+```{r}
+rowvec1 %*% colvec1
+t(colvec1) %*% colvec1
+colvec1 %*% rowvec1
+t(rowvec1) %*% rowvec1
+```
+
+### Python Examples
+
+I will demonstrate the same behavior using Python and Numpy.
+
+I have already showed one way to create vectors like matrix on a previous section. This time, we will use the `np.mat()` function.
+
+```{python}
+rowvec1 = np.mat([1,2,3,4])
+rowvec1
+rowvec1.shape
+```
+
+One think to keep in mind is that, numpy will give us row vectors by default. We can see that our vector has 1 row, and 4 columns.
+
+Fortunately, it is simple to get a column vector because these matrix vectors will behave as expected when we transpose them.
+
+```{python}
+colvec1 = np.mat([1,2,3,4]).T
+colvec1
+colvec1.shape
+```
+
+Consistent with R, multiplying incompatible vectors, returns errors.
+
+```{python, error=TRUE}
+rowvec1 @ rowvec1
+colvec1 @ colvec1
+```
+
+Consistent with the python examples before, `np.dot()` requires the left and right vector to be in the correct orientation to obtain the value we want. However, `np.outer()` will return the expected outer product no matter the orientation of the provided vectors.
+
+```{python, error=TRUE}
+np.dot(rowvec1, rowvec1)
+np.dot(rowvec1, colvec1)
+np.dot(colvec1, rowvec1)
+np.outer(rowvec1, rowvec1)
+np.outer(colvec1, colvec1)
+np.outer(rowvec1, colvec1)
+np.outer(colvec1, rowvec1)
+```
+
+## Conclusion
+
+Vectors in both R and Python behave in ways you might not expect. It can be confusing in what orientation vectors are created, what happens when they pass through a transpose function, or how they behave when being multiplied via operation or functions. These confusions can be mostly avoided by using both R's and Python's (Numpy's) implementation of matrices.
+
+Small quirks can be off putting for novices trying to learn using programming languages like R and Python. I hope this helps you avoid the confusions I faced.
