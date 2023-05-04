@@ -8,7 +8,7 @@ format:
         toc-location: left
         toc-expand: 3
 editor: visual
-author: Muon
+author: "Muon"
 date: "2023-05-03"
 categories: [Linear Algebra]
 ---
