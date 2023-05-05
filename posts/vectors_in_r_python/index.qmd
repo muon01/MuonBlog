@@ -21,7 +21,13 @@ I will show you how to use vectors in both R and Python, show some points of pot
 
 Ultimately, I recommend working with implementations of matrices, for both R and Python, even when working with vectors. Matrices behave in ways that are consistent to how you would learn from mathematics, and both R and Python makes fewer assumptions so that you can avoid confusions.
 
+I recorded a video if you'd rather consume the blog that way.
+
+{{< video https://youtu.be/r93Kb6StQs0 >}}
+
 ## R Vectors
+
+Overall, vectors in R behave intuitively.
 
 Constructing a vector in R is fairly trivial. You simply use the `c()` function and write a series of values within the parentheses.
 
@@ -74,7 +80,7 @@ We can display a longer vector to demonstrate this.
 ```{r}
 # this is a shorthand method of displaying a vector or integers
 # between 1 and 200.
-1:200
+50:250
 ```
 
 Depending on the size of your window and font, the vector of a series of integers from 1 to 200 will display using multiple lines. Each line will starts with the element number representing the first element on that new line.
@@ -310,11 +316,11 @@ Working with matrices is nice because they behave consistently.
 Here is how you a vector as a matrix using the `matrix()` function.
 
 ```{r}
-colvec1 <- matrix(data = 1:4, ncol = 1)
+colvec1 <- matrix(data = 1:4)
 colvec1
 ```
 
-We explicitly stated that we want a matrix with one column. This is the typical form of a vector that is most expected in mathmatics.
+We explicitly stated that we want a matrix. By default, it will give us a matrix with one column. This is the typical form of a vector that is assumed in mathematics.
 
 We can create a row matrix by specifying that we want a matrix with only one row.
 
