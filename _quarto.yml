@@ -6,8 +6,7 @@ website:
   title: "MuonBlog"
   navbar:
     right:
-      - icon: person-circle
-        href: about.qmd
+      - about.qmd
       - icon: twitter
         href: https://twitter.com/muon01_
       - icon: youtube
