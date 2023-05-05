@@ -6,15 +6,17 @@ website:
   title: "MuonBlog"
   navbar:
     right:
-      - about.qmd
-      - icon: github
-        href: https://github.com/muon01
+      - icon: person-circle
+        href: about.qmd
+      - icon: twitter
+        href: https://twitter.com/muon01_
       - icon: youtube
         href: https://youtube.com/@MuonCh
       - icon: twitch
         href: https://twitch.tv/muon01
-      - icon: twitter
-        href: https://twitter.com/muon01_
+      - icon: github
+        href: https://github.com/muon01
+
 format:
   html:
     theme: cosmo

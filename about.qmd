@@ -14,8 +14,8 @@ about:
       text: Twitch
       href: https://twitch.tv/muon01
     - icon: github
-      text: Github
+      text: GitHub
       href: https://github.com/muon01
 ---
 
-About this blog
+I posts whatever I want.
